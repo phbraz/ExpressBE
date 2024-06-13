@@ -40,8 +40,8 @@ const FindUser = async (req: Request, res: Response) => {
 
 const UpdateUser = async (req: Request, res: Response) => {
     try {
-        const { id, name, email } = req.body;
-        const user = await User.findByIdAndUpdate(id, { name, email}, {new: true});
+        const { name, email } = req.body;
+        const user = await User.findByIdAndUpdate(req.params.id, { name, email}, {new: true});
 
         if (!user) {
             return res.status(403).json({message: 'User not found'});
