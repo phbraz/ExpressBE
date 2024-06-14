@@ -11,7 +11,16 @@ const router = Router();
 
 //creating a new user test
 router.post("/", CreateUser);
-//find all users
+
+/**
+ * @swagger
+ * /users:
+ *  get:
+ *    description: Retrieve a list of users
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ */
 router.get("/", FindAllUsers);
 //find user by id
 router.get("/:id", FindUser);
