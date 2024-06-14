@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import Role from "../models/Role";
-import UserRole from "../models/UserRole";
 import { Request, Response } from "express"
-import User from "../models/User";
+import { UserRole } from "../models/UserRole";
+import { Role } from "../models/Role";
+import { User } from "../models/User";
 
 
 const seedRoles = async (req: Request, res: Response) => {

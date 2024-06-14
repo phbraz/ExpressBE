@@ -1,7 +1,14 @@
 import bcrypt from "bcryptjs";
-import User from "../models/User";
 import { Response, Request } from "express";
-import UserRole from "../models/UserRole";
+import { UserRole } from "../models/UserRole";
+import { IRole } from "../models/Role";
+import { IUser, User } from "../models/User";
+
+interface UserRoleResponse {
+    roleName: string,
+    user: string
+}
+
 
 const CreateUser = async (req: Request, res: Response) => {
     try {
@@ -69,14 +76,32 @@ const DeleteUser = async (req: Request, res: Response) => {
     }
 }
 
-const FindUserRole = async (req: Request, res: Response) => {
-    UserRole.find()
-        .populate("Role")
-        .exec()
-        .then(userRoles => {
-            res.json(userRoles);
-        })
-        .catch(err => res.status(500).json({error: err}));
+const FindAllRoles = async (req: Request, res: Response) => {
+    try {
+        const userRoles = await UserRole.find()
+            .populate("userId", "name email")
+            .populate("roleId", "name");
+
+        if (!userRoles) {
+            return res.status(403).json({message: "Can't find user role"});
+        }
+
+        const response: UserRoleResponse[] = [];
+
+        userRoles.map(u => {
+            const user = u.userId as IUser;
+            const role = u.roleId as IRole;
+
+            response.push({
+                user: user.name,
+                roleName: role.name,
+            });
+        });
+
+        res.json(response);
+    } catch (error:any) {
+        res.status(500).json({error: error.message});
+    }
 }
 
-export { CreateUser, FindAllUsers, FindUser, UpdateUser, DeleteUser, FindUserRole }
+export { CreateUser, FindAllUsers, FindUser, UpdateUser, DeleteUser, FindAllRoles }

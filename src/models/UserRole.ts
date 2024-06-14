@@ -1,21 +1,17 @@
-import mongoose, { Schema, Document, Types } from "mongoose"
+import mongoose, { Schema, Document, Types,  model } from "mongoose";
+import { IRole } from "./Role";
+import { IUser } from "./User";
 
 interface IUserRole extends Document {
-    userId: Types.ObjectId,
-    roleId: Types.ObjectId
+    roleId: Types.ObjectId | IRole;
+    userId: Types.ObjectId | IUser;
 }
 
-const UserRoleSchema: Schema<IUserRole> = new Schema({
-    userId: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-    },
-    roleId: {
-        type: Schema.Types.ObjectId,
-        ref: "Role",
-        required: true
-    }
+const UserRoleSchema = new Schema<IUserRole>({
+    roleId: { type: Schema.Types.ObjectId, ref: "Role", required: true },
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
 });
 
-export default mongoose.model<IUserRole>("UserRole", UserRoleSchema);
+const UserRole = model<IUserRole>("UserRole", UserRoleSchema);
+
+export { UserRole, IUserRole }
