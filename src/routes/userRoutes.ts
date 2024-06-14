@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
     CreateUser,
     DeleteUser, FindAllRoles,
-    FindAllUsers,
+    FindAllUsers, FindRoleByUser,
     FindUser,
     UpdateUser
 } from "../controllers/usersController";
@@ -19,8 +19,9 @@ router.get("/:id", FindUser);
 router.put("/:id", UpdateUser);
 //delete user
 router.delete("/:id", DeleteUser);
-
 //find users related roles
 router.get("/roles/findAllUserRoles", FindAllRoles);
+//find role by user
+router.get("/roles/findUserRole/:id", FindRoleByUser);
 
 export default router;

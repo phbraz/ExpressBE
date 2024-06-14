@@ -104,4 +104,28 @@ const FindAllRoles = async (req: Request, res: Response) => {
     }
 }
 
-export { CreateUser, FindAllUsers, FindUser, UpdateUser, DeleteUser, FindAllRoles }
+const FindRoleByUser = async (req: Request, res: Response) => {
+    try {
+        const userRole = await UserRole.findOne({ userId: req.params.id })
+            .populate("userId", "name email")
+            .populate("roleId", "name");
+
+        if (!userRole) {
+            return res.status(403).json({message: 'User role not found'});
+        }
+
+        const user = userRole.userId as IUser;
+        const role = userRole.roleId as IRole;
+        const response: UserRoleResponse = {
+            user: user.email,
+            roleName: role.name,
+        };
+
+        res.status(200).json(response);
+    } catch (error:any) {
+        res.status(500).json({error: error.message});
+    }
+}
+
+
+export { CreateUser, FindAllUsers, FindUser, UpdateUser, DeleteUser, FindAllRoles, FindRoleByUser }
