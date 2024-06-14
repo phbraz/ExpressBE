@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes";
+import seedDataRoutes from "./routes/seedDataRoutes";
 
 //Reading .env variables
 dotenv.config();
@@ -21,6 +22,7 @@ mongoose.connect(mongoURI)
     .catch((err: any) => console.log(err));
 
 app.use("/users", userRoutes);
+app.use("/seed", seedDataRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);

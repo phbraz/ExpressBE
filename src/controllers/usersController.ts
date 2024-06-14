@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User";
 import { Response, Request } from "express";
+import UserRole from "../models/UserRole";
 
 const CreateUser = async (req: Request, res: Response) => {
     try {
@@ -68,4 +69,14 @@ const DeleteUser = async (req: Request, res: Response) => {
     }
 }
 
-export { CreateUser, FindAllUsers, FindUser, UpdateUser, DeleteUser  }
+const FindUserRole = async (req: Request, res: Response) => {
+    UserRole.find()
+        .populate("Role")
+        .exec()
+        .then(userRoles => {
+            res.json(userRoles);
+        })
+        .catch(err => res.status(500).json({error: err}));
+}
+
+export { CreateUser, FindAllUsers, FindUser, UpdateUser, DeleteUser, FindUserRole }
